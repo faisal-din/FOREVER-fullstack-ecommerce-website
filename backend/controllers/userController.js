@@ -10,7 +10,7 @@ const createToken = (userId) => {
 // Route for user login
 export const loginUser = async (req, res) => {
   try {
-    // Code here
+    res.status(200).json({ message: 'User login' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
