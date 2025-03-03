@@ -82,7 +82,27 @@ export const getListProducts = async (req, res) => {
 };
 
 export const removeProduct = async (req, res) => {
-  res.send('Remove Product');
+  try {
+    const id = req.body.id;
+    const product = await ProductModel.findByIdAndDelete(id);
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found',
+      });
+    }
+
+    // await product.remove();
+    res.status(200).json({
+      success: true,
+      message: 'Product removed successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 export const getSingleProduct = async (req, res) => {
