@@ -21,13 +21,13 @@ productRouter.post(
   addProduct
 );
 
+// /api/product
+productRouter.get('/list', getListProducts);
+
 // /api/product/remove
 productRouter.post('/remove', removeProduct);
 
 // /api/product/single
 productRouter.post('/single', getSingleProduct);
-
-// /api/product
-productRouter.get('/list', getListProducts);
 
 export default productRouter;
