@@ -1,7 +1,12 @@
 import './App.css';
+import Navbar from './Components/Navbar';
 
 function App() {
-  return <h1 class='text-3xl font-bold '>ADMIN PANEL</h1>;
+  return (
+    <>
+      <Navbar />
+    </>
+  );
 }
 
 export default App;
