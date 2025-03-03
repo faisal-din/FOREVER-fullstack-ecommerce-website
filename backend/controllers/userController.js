@@ -106,8 +106,33 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// Route for user logout
-export const logoutUser = async (req, res) => {};
-
 // Route for admin login
-export const adminLogin = async (req, res) => {};
+export const adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    //
+    if (
+      email === process.env.ADMIN_EMAIL &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      let token = jwt.sign(email + password, process.env.JWT_SECRET);
+      res.status(200).json({
+        success: true,
+        message: 'Admin signed in successfully',
+        data: {
+          token,
+        },
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: 'Invalid email or password',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
