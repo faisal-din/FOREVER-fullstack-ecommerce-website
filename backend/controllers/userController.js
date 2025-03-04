@@ -116,7 +116,7 @@ export const adminLogin = async (req, res) => {
       password === process.env.ADMIN_PASSWORD
     ) {
       let token = jwt.sign(email + password, process.env.JWT_SECRET);
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Admin signed in successfully',
         data: {
@@ -124,11 +124,12 @@ export const adminLogin = async (req, res) => {
         },
       });
     } else {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'Invalid email or password',
       });
     }
+    res.send('Admin login');
   } catch (error) {
     res.status(500).json({
       success: false,
