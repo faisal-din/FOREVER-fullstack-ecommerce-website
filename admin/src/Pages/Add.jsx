@@ -85,19 +85,25 @@ const Add = () => {
         </div>
       </div>
 
-      {/* Product Data */}
+      {/* Product Name */}
       <div className='w-full'>
         <p className='mb-2'>Product Name</p>
         <input
+          onChange={(e) => setName(e.target.value)}
+          value={name}
           className='w-full max-w-[500px] px-3 py-2'
           type='text'
           placeholder='Type here'
           required
         />
       </div>
+
+      {/* Product Description */}
       <div className='w-full'>
         <p className='mb-2'>Product Description</p>
         <textarea
+          onChange={(e) => setDescription(e.target.value)}
+          value={description}
           className='w-full max-w-[500px] px-3 py-2'
           type='text'
           placeholder='Write content here'
@@ -109,7 +115,12 @@ const Add = () => {
       <div className='flex flex-col sm:flex-row gap-2 w-full sm:gap-8'>
         <div>
           <p className='mb-2'>Product Category</p>
-          <select className='w-full  px-3 py-2' name='category' id='category'>
+          <select
+            onChange={(e) => setCategory(e.target.value)}
+            className='w-full  px-3 py-2'
+            name='category'
+            id='category'
+          >
             <option value='Men'>Men</option>
             <option value='Women'>Women</option>
             <option value='Kids'>Kids</option>
@@ -118,7 +129,12 @@ const Add = () => {
 
         <div>
           <p className='mb-2'>Product Sub category</p>
-          <select className='w-full  px-3 py-2' name='category' id='category'>
+          <select
+            onChange={(e) => setSubCategory(e.target.value)}
+            className='w-full  px-3 py-2'
+            name='category'
+            id='category'
+          >
             <option value='Topwear'>Topwear</option>
             <option value='Bottomwear'>Bottomwear</option>
             <option value='Winterwear'>Winterwear</option>
@@ -129,6 +145,8 @@ const Add = () => {
         <div>
           <p className='mb-2'>Product Price</p>
           <input
+            onChange={(e) => setPrice(e.target.value)}
+            value={price}
             className='w-full sm:w-[120px] px-3 py-2'
             type='number'
             placeholder='2500'
