@@ -127,6 +127,7 @@ const Add = () => {
           </select>
         </div>
 
+        {/* Product Sub category */}
         <div>
           <p className='mb-2'>Product Sub category</p>
           <select
@@ -159,27 +160,108 @@ const Add = () => {
       <div>
         <p className='mb-2'>Product Sizes</p>
         <div className='flex gap-3'>
-          <div className='bg-slate-200 px-3 py-1 cursor-pointer '>
-            <p>S</p>
+          <div
+            onClick={() =>
+              setSizes((prev) =>
+                prev.includes('S')
+                  ? prev.filter((size) => size !== 'S')
+                  : [...prev, 'S']
+              )
+            }
+          >
+            <p
+              className={`${
+                sizes.includes('S') ? 'bg-pink-100' : 'bg-slate-200'
+              }  px-3 py-1 cursor-pointer`}
+            >
+              S
+            </p>
           </div>
-          <div className='bg-slate-200 px-3 py-1 cursor-pointer '>
-            <p>M</p>
+
+          <div
+            onClick={() =>
+              setSizes((prev) =>
+                prev.includes('M')
+                  ? prev.filter((size) => size !== 'M')
+                  : [...prev, 'M']
+              )
+            }
+          >
+            <p
+              className={`${
+                sizes.includes('M') ? 'bg-pink-100' : 'bg-slate-200'
+              }  px-3 py-1 cursor-pointer`}
+            >
+              M
+            </p>
           </div>
-          <div className='bg-slate-200 px-3 py-1 cursor-pointer '>
-            <p>L</p>
+
+          <div
+            onClick={() =>
+              setSizes((prev) =>
+                prev.includes('L')
+                  ? prev.filter((size) => size !== 'L')
+                  : [...prev, 'L']
+              )
+            }
+          >
+            <p
+              className={`${
+                sizes.includes('L') ? 'bg-pink-100' : 'bg-slate-200'
+              }  px-3 py-1 cursor-pointer`}
+            >
+              L
+            </p>
           </div>
-          <div className='bg-slate-200 px-3 py-1 cursor-pointer '>
-            <p>XL</p>
+
+          <div
+            onClick={() =>
+              setSizes((prev) =>
+                prev.includes('XL')
+                  ? prev.filter((size) => size !== 'XL')
+                  : [...prev, 'XL']
+              )
+            }
+          >
+            <p
+              className={`${
+                sizes.includes('XL') ? 'bg-pink-100' : 'bg-slate-200'
+              }  px-3 py-1 cursor-pointer`}
+            >
+              XL
+            </p>
           </div>
-          <div className='bg-slate-200 px-3 py-1 cursor-pointer '>
-            <p>XXL</p>
+
+          <div
+            onClick={() =>
+              setSizes((prev) =>
+                prev.includes('XXL')
+                  ? prev.filter((size) => size !== 'XXL')
+                  : [...prev, 'XXL']
+              )
+            }
+          >
+            <p
+              className={`${
+                sizes.includes('XXL') ? 'bg-pink-100' : 'bg-slate-200'
+              }  px-3 py-1 cursor-pointer`}
+            >
+              XXL
+            </p>
           </div>
         </div>
       </div>
 
       {/* Add to bestseller */}
       <div className='flex items-center gap-2 mt-2'>
-        <input type='checkbox' name='' id='bestseller' />
+        <input
+          onChange={() => setBestSeller((prev) => !prev)}
+          checked={bestSeller}
+          className='w-3 h-3 cursor-pointer'
+          type='checkbox'
+          name=''
+          id='bestseller'
+        />
         <label htmlFor='bestseller' className='cursor-pointer'>
           Add to Bestseller
         </label>
