@@ -12,11 +12,30 @@ const List = ({ token }) => {
         headers: { token },
       });
 
-      console.log('list response', response);
-      console.log('product list', response.data.products);
-
       if (response.data.success) {
         setList(response.data.products);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const removeProduct = async (id) => {
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/product/remove`,
+        { id },
+        {
+          headers: { token },
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        fetchList();
       } else {
         toast.error(response.data.message);
       }
@@ -62,7 +81,10 @@ const List = ({ token }) => {
               {currency}
               {product.price}
             </p>
-            <button className='text-right md:text-center text-lg  cursor-pointer'>
+            <button
+              onClick={() => removeProduct(product._id)}
+              className='text-right md:text-center text-lg  cursor-pointer'
+            >
               X
             </button>
           </div>
