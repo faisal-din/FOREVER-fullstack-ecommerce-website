@@ -10,3 +10,11 @@
 * {
   font-family: 'Outfit', sans-serif;
 }
+
+select,
+input,
+textarea {
+  border: 1px solid #c2c2c2;
+  border-radius: 5px;
+  outline-color: #c586a5;
+}
