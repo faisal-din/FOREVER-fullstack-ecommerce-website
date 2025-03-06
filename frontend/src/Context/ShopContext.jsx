@@ -16,6 +16,7 @@ const ShopContextProvider = ({ children }) => {
   const [orders, setOrders] = useState([]); // New state to hold orders
   const navigate = useNavigate(); // to navigate to different pages
   const [products, setProducts] = useState([]);
+  const [token, setToken] = useState('');
 
   const addToCart = async (itemId, size) => {
     if (!size) {
@@ -109,6 +110,12 @@ const ShopContextProvider = ({ children }) => {
     getProductsData();
   }, []);
 
+  useEffect(() => {
+    if (!token && localStorage.getItem('token')) {
+      setToken(localStorage.getItem('token'));
+    }
+  }, []);
+
   const value = {
     products,
     currency,
@@ -126,6 +133,8 @@ const ShopContextProvider = ({ children }) => {
     orders,
     navigate,
     backendUrl,
+    token,
+    setToken,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;

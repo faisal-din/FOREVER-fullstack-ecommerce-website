@@ -27,7 +27,7 @@ export const loginUser = async (req, res) => {
     if (!isPasswordValid) {
       return res
         .status(400)
-        .json({ success: false, message: 'Invalid password' });
+        .json({ success: false, message: 'Invalid password or email' });
     }
 
     let token = createToken(user._id);
