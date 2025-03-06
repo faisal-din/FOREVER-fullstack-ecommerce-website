@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const Login = () => {
   const { token, setToken, navigate, backendUrl } = useContext(ShopContext);
-  const [currentState, setCurrentState] = useState('Sign Up');
+  const [currentState, setCurrentState] = useState('Login');
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -53,7 +53,7 @@ const Login = () => {
     if (token) {
       navigate('/');
     }
-  }, []);
+  }, [token]);
 
   return (
     <form
