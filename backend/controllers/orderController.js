@@ -44,7 +44,23 @@ export const placeOrderRazorpay = async (req, res) => {};
 export const getAllOrders = async (req, res) => {};
 
 // user order data for frontend --> /api/order/userorders
-export const getUserOrders = async (req, res) => {};
+export const getUserOrders = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    const orders = await orderModel.find({ userId });
+    res.status(200).json({
+      success: true,
+      orders,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 // upadae order status --> /api/order/status
 export const updateOrderStatus = async (req, res) => {};

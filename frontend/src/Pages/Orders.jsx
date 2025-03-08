@@ -1,9 +1,50 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Title from '../Components/Title';
 import { ShopContext } from '../Context/ShopContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Orders = () => {
-  const { orders, products, currency } = useContext(ShopContext);
+  const { currency, backendUrl, token } = useContext(ShopContext);
+
+  // Orders data
+  const [orderData, setOrderData] = useState([]);
+
+  // Fetch the orders data
+  const fetchOrderData = async () => {
+    try {
+      if (!token) {
+        return null;
+      }
+
+      const response = await axios.post(
+        backendUrl + '/api/order/userorders',
+        {},
+        { headers: { token } }
+      );
+      if (response.data.success) {
+        let allOrderItem = [];
+        response.data.orders.map((order) => {
+          order.items.map((item) => {
+            item['orderStatus'] = order.orderStatus;
+            item['payment'] = order.payment;
+            item['paymentMethod'] = order.paymentMethod;
+            item['date'] = order.date;
+            allOrderItem.push(item);
+          });
+        });
+
+        setOrderData(allOrderItem);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrderData();
+  }, [token]);
 
   // Function to format the current date
   const formatDate = (date) => {
@@ -19,43 +60,40 @@ const Orders = () => {
       <div className='mb-3 text-2xl'>
         <Title text1={'MY'} text2={'ORDERS'} />
       </div>
+      <div>{}</div>
 
-      {orders.length === 0 ? (
+      {orderData.length === 0 ? (
         <p className='text-gray-500'>You have no orders.</p>
       ) : (
         <div>
-          {orders.map((order, index) => {
-            const productData = products.find(
-              (product) => product._id === order._id
-            );
-
+          {orderData.map((item, index) => {
             return (
               <div
                 key={index}
                 className='py-4 border-t border-b text-gray-700 flex flex-col md:flex-row md:items-center md:justify-between g4'
               >
                 <div className='flex items-start gap-6'>
-                  <img
-                    src={productData.image[0]}
-                    alt=''
-                    className='w-16 sm:w-20'
-                  />
+                  <img src={item.image[0]} alt='' className='w-16 sm:w-20' />
 
                   <div>
-                    <p className='sm:text-base font-medium'>
-                      {productData.name}
-                    </p>
+                    <p className='sm:text-base font-medium'>{item.name}</p>
 
-                    <div className='flex items-center gap-5 mt-2 text-base text-gray-700'>
+                    <div className='flex items-center gap-5 mt-1 text-base text-gray-700'>
                       <p>
                         {currency}
-                        {productData.price}
+                        {item.price}
                       </p>
-                      <p>Quantity: {order.quantity}</p>
-                      <p>Size: {order.size}</p>
+                      <p>Quantity: {item.quantity}</p>
+                      <p>Size: {item.size}</p>
                     </div>
-                    <p className='mt-2'>
+                    <p className='mt-1'>
                       Date: <span className='text-gray-400'>{currentDate}</span>
+                    </p>
+                    <p className='mt-1'>
+                      Payment Method:{' '}
+                      <span className='text-gray-400'>
+                        {item.paymentMethod}
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -63,9 +101,12 @@ const Orders = () => {
                 <div className='flex justify-between md:w-1/2'>
                   <div className='flex items-center gap-2'>
                     <p className='min-w-2 h-2 rounded-full bg-green-400'></p>
-                    <p className='text-sm md:text-base'>Ready to ship</p>
+                    <p className='text-sm md:text-base'>{item.orderStatus}</p>
                   </div>
-                  <button className='border px-4 py-2 text-sm font-medium rounded-sm text-gray-700'>
+                  <button
+                    onClick={fetchOrderData}
+                    className='border px-4 py-2 text-sm font-medium rounded-sm text-gray-700 cursor-pointer hover:bg-gray-100'
+                  >
                     Track Order
                   </button>
                 </div>
