@@ -5,12 +5,12 @@ import {
   updateCart,
   getUserCart,
 } from '../controllers/cartController.js';
-import { authUser } from '../middlewares/userAuth.js';
+import { userAuth } from '../middlewares/userAuth.js';
 
 const cartRouter = express.Router();
 
-cartRouter.post('/add', authUser, addToCart);
-cartRouter.post('/update', authUser, updateCart);
-cartRouter.post('/get', authUser, getUserCart);
+cartRouter.post('/add', userAuth, addToCart);
+cartRouter.post('/update', userAuth, updateCart);
+cartRouter.post('/get', userAuth, getUserCart);
 
 export default cartRouter;

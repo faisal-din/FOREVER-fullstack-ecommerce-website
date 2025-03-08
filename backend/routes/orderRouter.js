@@ -6,10 +6,10 @@ import {
   placeOrderRazorpay,
   placeOrderStripe,
   updateOrderStatus,
-} from '../controllers/orderController';
+} from '../controllers/orderController.js';
 
 import adminAuth from '../middlewares/adminAuth.js';
-import userAuth from '../middlewares/userAuth.js';
+import { userAuth } from '../middlewares/userAuth.js';
 
 const orderRouter = express.Router();
 
