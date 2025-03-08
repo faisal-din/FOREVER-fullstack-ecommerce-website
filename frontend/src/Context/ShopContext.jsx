@@ -36,6 +36,33 @@ const ShopContextProvider = ({ children }) => {
     }
 
     setCartItems(cartData);
+
+    if (token) {
+      try {
+        const response = await axios.post(
+          backendUrl + '/api/cart/add',
+          {
+            itemId,
+            size,
+          },
+          {
+            headers: {
+              token,
+            },
+          }
+        );
+
+        if (response.data.success) {
+          toast.success(response.data.message);
+        } else {
+          console.log('error', response.data.message);
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.response.data.message);
+      }
+    }
   };
 
   const addOrder = () => {
