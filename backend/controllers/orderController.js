@@ -78,4 +78,20 @@ export const getUserOrders = async (req, res) => {
 };
 
 // upadae order status --> /api/order/status
-export const updateOrderStatus = async (req, res) => {};
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { orderId, orderStatus } = req.body;
+
+    await orderModel.findByIdAndUpdate(orderId, { orderStatus });
+    res.status(200).json({
+      success: true,
+      message: 'Order status updated successfully',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
