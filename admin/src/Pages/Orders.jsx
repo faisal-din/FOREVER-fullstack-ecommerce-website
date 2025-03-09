@@ -17,7 +17,6 @@ const Orders = ({ token }) => {
         {},
         { headers: { token } }
       );
-      console.log('response', response.data);
       if (response.data.success) {
         setOrders(response.data.orders);
       } else {
@@ -36,7 +35,6 @@ const Orders = ({ token }) => {
         { orderId, orderStatus: event.target.value },
         { headers: { token } }
       );
-      console.log('response', response.data);
       if (response.data.success) {
         await fetchAllOrders();
       }

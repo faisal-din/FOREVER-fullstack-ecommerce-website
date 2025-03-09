@@ -1,5 +1,14 @@
 import orderModel from '../models/orderModel.js';
 import UserModel from '../models/userModel.js';
+import Stripe from 'stripe';
+import Razorpay from 'razorpay';
+
+// global variables
+const currency = 'aed';
+const deliveryCharges = 10; // Delivery charges in AED
+
+// Stripe payment configuration
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Place order using COD method --> /api/order/place
 export const placeOrderCOD = async (req, res) => {
@@ -12,7 +21,6 @@ export const placeOrderCOD = async (req, res) => {
       amount,
       address,
       paymentMethod: 'COD',
-      // orderStatus: 'success',
       payment: false,
       date: Date.now(),
     };
@@ -35,7 +43,65 @@ export const placeOrderCOD = async (req, res) => {
 };
 
 // Place order using Stripe method --> /api/order/stripe
-export const placeOrderStripe = async (req, res) => {};
+export const placeOrderStripe = async (req, res) => {
+  try {
+    const { userId, items, amount, address } = req.body;
+    const { origin } = req.headers;
+
+    const orderData = {
+      userId,
+      items,
+      amount,
+      address,
+      paymentMethod: 'Stripe',
+      payment: false,
+      date: Date.now(),
+    };
+
+    const newOrder = new orderModel(orderData);
+    await newOrder.save();
+
+    const line_items = items.map((item) => ({
+      price_data: {
+        currency: currency,
+        product_data: {
+          name: item.name,
+        },
+        unit_amount: item.price * 100,
+      },
+      quantity: item.quantity,
+    }));
+
+    line_items.push({
+      price_data: {
+        currency: currency,
+        product_data: {
+          name: 'Delivery Charges',
+        },
+        unit_amount: deliveryCharges * 100,
+      },
+      quantity: 1,
+    });
+
+    const session = await stripe.checkout.sessions.create({
+      success_url: `${origin}/verify?success=true&orderId=${newOrder._id}`,
+      cancel_url: `${origin}/verify?success=true&orderId=${newOrder._id}`,
+      line_items,
+      mode: 'payment',
+    });
+
+    res.status(200).json({
+      success: true,
+      session_url: session.url,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 // Place order using Razorpay method --> /api/order/razorpay
 export const placeOrderRazorpay = async (req, res) => {};
