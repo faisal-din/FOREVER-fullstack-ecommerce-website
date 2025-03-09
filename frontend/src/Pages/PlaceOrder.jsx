@@ -82,6 +82,23 @@ const PlaceOrder = () => {
           break;
         }
 
+        // API calls for Stripe payment method
+        case 'stripe': {
+          const response = await axios.post(
+            `${backendUrl}/api/order/stripe`,
+            orderData,
+            { headers: { token } }
+          );
+
+          if (response.data.success) {
+            const { session_url } = response.data;
+            window.location.replace(session_url);
+          } else {
+            toast.error(response.data.message);
+          }
+          break;
+        }
+
         default:
           break;
       }
