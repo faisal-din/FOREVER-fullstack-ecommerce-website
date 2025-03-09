@@ -103,6 +103,36 @@ export const placeOrderStripe = async (req, res) => {
   }
 };
 
+// verify Stripe payment success or failure --> /api/order/verifyStripe
+export const verifyStrpePayment = async (req, res) => {
+  const { orderId, success, userId } = req.body;
+  try {
+    if (success === 'true') {
+      await orderModel.findByIdAndUpdate(orderId, {
+        payment: true,
+      });
+
+      await UserModel.findByIdAndUpdate(userId, { cartData: {} });
+      res.status(200).json({
+        success: true,
+        message: 'Payment successful',
+      });
+    } else {
+      await orderModel.findByIdAndDelete(orderId);
+      res.status(200).json({
+        success: false,
+        message: 'Payment failed',
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // Place order using Razorpay method --> /api/order/razorpay
 export const placeOrderRazorpay = async (req, res) => {};
 

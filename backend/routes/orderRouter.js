@@ -6,6 +6,7 @@ import {
   placeOrderRazorpay,
   placeOrderStripe,
   updateOrderStatus,
+  verifyStrpePayment,
 } from '../controllers/orderController.js';
 
 import adminAuth from '../middlewares/adminAuth.js';
@@ -24,5 +25,8 @@ orderRouter.use('/razorpay', placeOrderRazorpay);
 
 // User features
 orderRouter.use('/userorders', userAuth, getUserOrders);
+
+// verify payment
+orderRouter.use('/verifyStripe', userAuth, verifyStrpePayment);
 
 export default orderRouter;
