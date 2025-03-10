@@ -2,19 +2,19 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Home from './Pages/Home';
 import Collection from './Pages/Collection';
-import About from './pages/About';
-import Contact from './pages/Contact';
+import About from './Pages/About';
+import Contact from './Pages/Contact';
 import Product from './Pages/Product';
 import Cart from './Pages/Cart';
-import Login from './pages/Login';
-import PlaceOrder from './pages/PlaceOrder';
+import Login from './Pages/Login';
+import PlaceOrder from './Pages/PlaceOrder';
 import Orders from './Pages/Orders';
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
 import SearchBar from './Components/SearchBar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Verify from './Pages/verify';
+import Verify from './Pages/Verify';
 
 console.log(toast);
 
