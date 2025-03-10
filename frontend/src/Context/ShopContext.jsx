@@ -87,9 +87,15 @@ const ShopContextProvider = ({ children }) => {
   const getCartCount = () => {
     let totalCount = 0;
     for (const item in cartItems) {
-      for (const size in cartItems[item]) {
-        if (cartItems[item][size] > 0) {
-          totalCount += cartItems[item][size];
+      // Check if this item ID exists in the products array
+      const productExists = products.find((product) => product._id === item);
+
+      // Only count items that exist in the database
+      if (productExists) {
+        for (const size in cartItems[item]) {
+          if (cartItems[item][size] > 0) {
+            totalCount += cartItems[item][size];
+          }
         }
       }
     }
@@ -127,13 +133,15 @@ const ShopContextProvider = ({ children }) => {
     let totalAmount = 0;
     for (const item in cartItems) {
       const productInfo = products.find((product) => product._id === item);
-      for (const size in cartItems[item]) {
-        try {
-          if (cartItems[item][size] > 0) {
-            totalAmount += productInfo.price * cartItems[item][size];
+      if (productInfo) {
+        for (const size in cartItems[item]) {
+          try {
+            if (cartItems[item][size] > 0) {
+              totalAmount += productInfo.price * cartItems[item][size];
+            }
+          } catch (error) {
+            console.log('error', error);
           }
-        } catch (error) {
-          console.log('error', error);
         }
       }
     }
